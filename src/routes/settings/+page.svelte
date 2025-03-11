@@ -45,7 +45,7 @@ implement with frontend:
 <!-- can build executable file with `bun run tauri build` -->
 
 <div
-	class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-black via-slate-900 to-slate-600 transition-all duration-500"
+	class="absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px] min-h-screen flex items-center justify-center p-4 transition-all duration-500"
 >
 	<Card.Root
 		class="w-[380px] h-[280px] bg-transparent transition-all duration-300 border-none"
