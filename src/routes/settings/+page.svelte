@@ -58,10 +58,10 @@ implement with frontend:
 					<p>{gs.greet}</p>
 				{:else}
 					<div class="flex flex-row space-x-2 place-content-between">
-						<p>METIL HoloTable</p>
-						<Button>
-							<SettingsIcon class="mt-2" href="/settings"/>
-						</Button>
+						<p>Settings Shit</p>
+						<a href="/settings">
+                            <SettingsIcon class="mt-2"/>
+                        </a>
 					</div>
 				{/if}
 			</Card.Title>
@@ -100,6 +100,7 @@ implement with frontend:
 					>
 			</form>
 		</Card.Content>
+		<!-- {/if} -->
 		{:else if gs.isVoiceInput}
 		<Card.Content class="p-6">
 			<form {onsubmit} class="space-y-3">
@@ -110,6 +111,11 @@ implement with frontend:
 						speech to text area!!! yay
 					</Button>
 					<img alt="erome" src={erom3} class="h-[100px] w-full"/>
+					<!-- <Button
+						{onclick}
+						class="w-full bg-gradient-to-r from-black to-yellow-900/50 hover:opacity-90 transition-opacity duration-200"
+						>Reset</Button
+					> -->
 			</form>
 		</Card.Content>
 		{/if}
