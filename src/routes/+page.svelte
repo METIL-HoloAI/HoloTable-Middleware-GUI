@@ -77,41 +77,11 @@ implement with frontend:
 			</div>
 		</Card.Header>
 		{#if !gs.isVoiceInput}
-		<Card.Content class="p-6">
-			<form {onsubmit} class="space-y-3">
-					<div class="flex w-full max-w-sm items-center space-x-2">
-						<Input
-							type="text"
-							placeholder="Enter your prompt"
-							bind:value={gs.name}
-							class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-black focus-visible:ring-black transition-all duration-200"
-						/>
-						<Button
-							type="submit"
-							class="w-min rounded-full text-black bg-gradient-to-r from-white to-white/95 transition-opacity duration-200"
-						>
-							<SendHorizontalIcon/>
-						</Button>
-					</div>
-					<Button
-						{onclick}
-						class="w-full bg-gradient-to-r from-black to-black/50 hover:ring-1 hover:ring-slate-200 transition-all duration-200"
-						>Reset</Button
-					>
-			</form>
-		</Card.Content>
+			<!-- if input mode is text -->
+			<TextInput />
 		{:else if gs.isVoiceInput}
-		<Card.Content class="p-6">
-			<form {onsubmit} class="space-y-3">
-					<Button
-						type="submit"
-						class="w-full h-full bg-gradient-to-r from-black to-yellow-400/50 hover:opacity-90 transition-opacity duration-200"
-					>
-						speech to text area!!! yay
-					</Button>
-					<img alt="erome" src={erom3} class="h-[100px] w-full"/>
-			</form>
-		</Card.Content>
+			<!-- if input mode is voice -->
+			<SpeechInput />
 		{/if}
 	</Card.Root>
 </div>
