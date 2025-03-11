@@ -7,6 +7,8 @@
 	import erom3 from '$lib/erom3.jpeg';
 	import { SendHorizontalIcon } from '@lucide/svelte';
 	import { SettingsIcon } from '@lucide/svelte';
+	import SpeechInput from './SpeechInput.svelte';
+	import TextInput from './TextInput.svelte';
 
 	const gs = new GlobalState();
 
@@ -27,14 +29,9 @@
 </script>
 
 <!-- left to do:
-- "change ui to take up whole screen baby"  
-- change submit to an arrow like chatgpt
-- allow user to navigate to config editing area
 - work on config editing ui
 - allow user to navigate back to prompting area 
-
 - perhaps log to the side the entire typed prompt the user has typed or the STT transcription
-
 
 implement with frontend:
 - text prompting functionality
@@ -45,18 +42,35 @@ implement with frontend:
 	<div
 		class="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] min-h-screen flex items-center justify-center p-4 bg-slate-950 transition-all duration-500"
 	>
-		<Card.Header class="space-y-2">
-			<Card.Title
-				class="text-3xl font-bold text-center text-white"
-			>
-				{#if gs.greet}
-					<p>{gs.greet}</p>
-				{:else}
+		<Card.Root class="w-[380px] h-[280px] bg-transparent transition-all duration-300 border-none">
+			<Card.Header class="space-y-2">
+				<Card.Title class="text-3xl font-bold text-center text-white">
 					<div class="flex flex-row space-x-2 place-content-between">
 						<p>METIL HoloTable</p>
-						<Button>
-							<SettingsIcon class="mt-2" href="/settings"/>
-						</Button>
+						<a href="/settings">
+							<SettingsIcon class="mt-2 hover:opacity-80 transition-all duration-200" />
+						</a>
 					</div>
+				</Card.Title>
+				<div class="flex flex-row text-white">
+					<Switch
+						checked={gs.isVoiceInput}
+						onCheckedChange={(checked) => {
+							gs.isVoiceInput = checked;
+							onSwitch();
+						}}
+						class="hover:opacity-80 transition-all duration-200"
+					/>
+					<span class="ml-3">{gs.isVoiceInput ? 'Speech-to-Text' : 'Text Input'}</span>
+				</div>
+			</Card.Header>
+			{#if !gs.isVoiceInput}
+				<!-- if input mode is text -->
+				<TextInput />
+			{:else if gs.isVoiceInput}
+				<!-- if input mode is voice -->
+				<SpeechInput />
+			{/if}
+		</Card.Root>
 	</div>
 </div>
