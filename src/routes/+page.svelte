@@ -4,7 +4,7 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Switch } from '$lib/components/ui/switch/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import erom3 from '$lib/erom3.jpeg'
+	import erom3 from '$lib/erom3.jpeg';
 	import { SendHorizontalIcon } from '@lucide/svelte';
 	import { SettingsIcon } from '@lucide/svelte';
 
@@ -18,12 +18,12 @@
 	const onSwitch = () => {
 		let inputMode: string;
 		if (gs.isVoiceInput == true) {
-			inputMode = 'STT'
+			inputMode = 'STT';
 		} else {
-			inputMode = 'text'
+			inputMode = 'text';
 		}
-		console.log("input mode: " +inputMode);
-	}
+		console.log('input mode: ' + inputMode);
+	};
 </script>
 
 <!-- left to do:
