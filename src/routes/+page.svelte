@@ -38,7 +38,7 @@ implement with frontend:
 	<div
 		class="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] min-h-screen flex items-center justify-center p-4 bg-slate-950 transition-all duration-500"
 	>
-		<Card.Root class="w-[380px] h-[280px] bg-transparent transition-all duration-300 border-none">
+		<Card.Root class="w-4/6 h-4/6 bg-transparent transition-all duration-300 border-none">
 			<Card.Header class="space-y-2">
 				<Card.Title class="text-center">
 					<div class="flex flex-row space-x-2 place-content-between">

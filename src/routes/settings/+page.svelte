@@ -14,7 +14,7 @@
 <div
 	class="absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px] min-h-screen flex items-center justify-center p-4 transition-all duration-500"
 >
-	<Card.Root class="w-[380px] h-[280px] bg-transparent transition-all duration-300 border-none">
+	<Card.Root class="w-4/6 h-4/6 bg-transparent transition-all duration-300 border-none">
 		<Card.Header class="space-y-2">
 			<Card.Title class="text-3xl font-bold text-center text-white">
 				<div class="flex flex-row space-x-2 place-content-between">
