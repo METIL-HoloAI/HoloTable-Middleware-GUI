@@ -1,11 +1,7 @@
 <script lang="ts">
 	import { GlobalState, preventDefault } from '$lib';
-	import { Button } from '$lib/components/ui/button/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
 	import { Switch } from '$lib/components/ui/switch/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import erom3 from '$lib/erom3.jpeg';
-	import { SendHorizontalIcon } from '@lucide/svelte';
 	import { SettingsIcon } from '@lucide/svelte';
 	import SpeechInput from './SpeechInput.svelte';
 	import TextInput from './TextInput.svelte';

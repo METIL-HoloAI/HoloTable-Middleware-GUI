@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { GlobalState, preventDefault } from '$lib';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { SendHorizontalIcon } from '@lucide/svelte';
 
@@ -11,16 +10,6 @@
 
 	const onsubmit = preventDefault(() => gs.nlen && gs.submit());
 	const onclick = () => gs.reset();
-
-	const onSwitch = () => {
-		let inputMode: string;
-		if (gs.isVoiceInput == true) {
-			inputMode = 'STT';
-		} else {
-			inputMode = 'text';
-		}
-		console.log('input mode: ' + inputMode);
-	};
 </script>
 
 <Card.Content class="p-6">
