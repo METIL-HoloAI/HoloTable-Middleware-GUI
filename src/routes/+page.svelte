@@ -44,11 +44,17 @@ implement with frontend:
 	>
 		<Card.Root class="w-[380px] h-[280px] bg-transparent transition-all duration-300 border-none">
 			<Card.Header class="space-y-2">
-				<Card.Title class="text-3xl font-bold text-center text-white">
+				<Card.Title class="text-center">
 					<div class="flex flex-row space-x-2 place-content-between">
-						<p>METIL HoloTable</p>
+						<h1
+							class="animate-text bg-gradient-to-r from-yellow-50 via-white to-violet-50 bg-clip-text text-transparent text-3xl font-black"
+						>
+							METIL HoloTable
+						</h1>
 						<a href="/settings">
-							<SettingsIcon class="mt-2 hover:opacity-80 transition-all duration-200" />
+							<SettingsIcon
+								class="mt-2 hover:opacity-80 hover:scale-110 transition-all duration-200 text-white"
+							/>
 						</a>
 					</div>
 				</Card.Title>
