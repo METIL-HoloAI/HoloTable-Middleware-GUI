@@ -50,10 +50,14 @@
 					<SendHorizontalIcon />
 				</Button>
 			</div>
-			<Button
-				onclick={onReset}
-				class="w-full bg-slate-800 hover:bg-slate-700 transition-all duration-200">Reset</Button
-			>
+			<div class="flex justify-end">
+				<Button
+					onclick={onReset}
+					class="w-1/2 bg-red-900/75 hover:bg-red-800/75 text-white transition-all duration-200"
+				>
+					Clear
+				</Button>
+			</div>
 		</form>
 	</Card.Content>
 </div>
