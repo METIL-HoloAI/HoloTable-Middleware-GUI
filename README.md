@@ -1,8 +1,8 @@
-# Tauri 2 Svelte 5 Boilerplate
-Simple boilerplate for Tauri 2 with Svelte 5 (and shadcn-svelte) using Bun runtime.
+# GUI to be used alongside the [HoloTable Middleware](https://github.com/METIL-HoloAI/HoloTable-Middleware)
+Built with [this](https://github.com/alysonhower/tauri2-svelte5-shadcn) boilerplate for Tauri 2 with Svelte 5 (and shadcn-svelte) using Bun runtime.
 
-## Requirements
-In order to run this boilerplate, you need to install Bun and Rust. If you are on Windows I also recommend installing MSVC before the other dependencies (make sure to check the "Desktop development with C++" workload).
+## Prerequisites
+In order to run this project, you need to install Bun and Rust. If you are on Windows I also recommend installing MSVC before the other dependencies (make sure to check the "Desktop development with C++" workload).
 
 Some useful links:
 - https://bun.sh/docs/installation
@@ -11,17 +11,22 @@ Some useful links:
 
 ## Setup
 ```
-git clone https://github.com/alysonhower/tauri2-svelte5-shadcn.git
-cd tauri2-svelte5-shadcn
+git clone https://github.com/METIL-HoloAI/HoloTable-Middleware-GUI.git
+cd HoloTable-Middleware-GUI
 bun i
 ```
 ## Useful commands
-### Start dev server
+### Start desktop dev server
 ```
 bun run tauri dev
 ```
 
-### Build executable
+### Start browser dev server
+```
+bun run pnpm dev --open
+```
+
+### Build executable file
 ```
 bun run tauri build
 ```
@@ -35,8 +40,6 @@ https://tauri.app/start/
 
 ### shadcn-svelte
 https://next.shadcn-svelte.com/
-
-Note: Boilerplate tested on Windows 11 only.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
