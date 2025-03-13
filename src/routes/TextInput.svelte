@@ -37,7 +37,7 @@
 	<Card.Content class="p-6">
 		<!-- <form {onsubmit} class="space-y-3"> -->
 		<form class="space-y-3">
-			<div class="flex w-full max-w-sm items-center space-x-2">
+			<div class="relative items-center space-x-2">
 				<Textarea
 					placeholder="Enter a prompt for the HoloTable here."
 					id="message-2"
@@ -45,15 +45,14 @@
 				/>
 				<Button
 					type="submit"
-					class="w-min rounded-full text-black bg-gradient-to-r from-white to-white/95 transition-opacity duration-200 hover:opacity-80"
+					class="absolute right-2 bottom-2 w-min rounded-full text-white bg-slate-800 transition-all duration-200 hover:bg-slate-700"
 				>
 					<SendHorizontalIcon />
 				</Button>
 			</div>
 			<Button
 				onclick={onReset}
-				class="w-full bg-gradient-to-r from-slate-300/50 to-slate-400/50 hover:ring-1 hover:opacity-80 transition-all duration-200"
-				>Reset</Button
+				class="w-full bg-slate-800 hover:bg-slate-700 transition-all duration-200">Reset</Button
 			>
 		</form>
 	</Card.Content>
