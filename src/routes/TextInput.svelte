@@ -7,7 +7,7 @@
 
 	const gs = new GlobalState();
 
-	$inspect(gs.greet, gs.name);
+	$inspect(gs.prompt);
 
 	const onsubmit = preventDefault(() => gs.nlen && gs.submit());
 	const onclick = () => gs.reset();
@@ -15,7 +15,8 @@
 
 <div>
 	<Card.Content class="p-6">
-		<form {onsubmit} class="space-y-3">
+		<!-- <form {onsubmit} class="space-y-3"> -->
+		<form class="space-y-3">
 			<div class="flex w-full max-w-sm items-center space-x-2">
 				<!-- <Input
 					type="text"

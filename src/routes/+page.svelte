@@ -8,11 +8,6 @@
 
 	const gs = new GlobalState();
 
-	$inspect(gs.greet, gs.name);
-
-	const onsubmit = preventDefault(() => gs.nlen && gs.submit());
-	const onclick = () => gs.reset();
-
 	const onSwitch = () => {
 		let inputMode: string;
 		if (gs.isVoiceInput == true) {
