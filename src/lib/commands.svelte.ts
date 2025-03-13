@@ -8,31 +8,24 @@ export const preventDefault = <T extends Event>(fn: (e: T) => void): ((e: T) => 
 };
 
 export class GlobalState {
-	private _state = $state({ name: '', greet: '' });
+	private _state = $state({ prompt: '' });
 	public isVoiceInput = $state(false);
 
-	get greet() {
-		return this._state.greet;
+	get prompt() {
+		return this._state.prompt;
 	}
-	set greet(value: string) {
-		this._state.greet = value;
-	}
-	get name() {
-		return this._state.name;
-	}
-	set name(value: string) {
-		this._state.name = value;
+	set prompt(value: string) {
+		this._state.prompt = value;
 	}
 	get nlen() {
-		return this.name.length;
+		return this.prompt.length;
 	}
 
-	async submit() {
-		this.greet = await invoke('greet', { name: this.name });
-	}
+	// async submit() {
+	// 	this.greet = await invoke('greet', { name: this.prompt });
+	// }
 
 	reset() {
-		this.name = '';
-		this.greet = '';
+		this.prompt = '';
 	}
 }
