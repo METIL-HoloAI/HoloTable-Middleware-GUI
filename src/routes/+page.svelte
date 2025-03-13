@@ -21,8 +21,6 @@
 
 <!-- left to do:
 - work on config editing ui
-- allow user to navigate back to prompting area 
-- perhaps log to the side the entire typed prompt the user has typed or the STT transcription
 
 implement with frontend:
 - text prompting functionality
@@ -52,7 +50,7 @@ implement with frontend:
 				<div class="flex flex-row text-white">
 					<Switch
 						checked={gs.isVoiceInput}
-						onCheckedChange={(checked) => {
+						onCheckedChange={(checked: boolean) => {
 							gs.isVoiceInput = checked;
 							onSwitch();
 						}}
