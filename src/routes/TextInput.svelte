@@ -11,6 +11,14 @@
 	$inspect(gs.prompt);
 
 	// const onsubmit = preventDefault(() => gs.nlen && gs.submit());
+	const onsubmit = () => {
+		if (gs.prompt === '') {
+			toast.error('Prompt is currently empty.');
+		} else {
+			gs.submit();
+			toast.success('Prompt has been sent.');
+		}
+	};
 	let lastPrompt = '';
 
 	const onReset = () => {
@@ -35,8 +43,7 @@
 
 <div>
 	<Card.Content class="p-6">
-		<!-- <form {onsubmit} class="space-y-3"> -->
-		<form class="space-y-3">
+		<form {onsubmit} class="space-y-3">
 			<div class="relative items-center space-x-2">
 				<Textarea
 					placeholder="Enter a prompt for the HoloTable here."
