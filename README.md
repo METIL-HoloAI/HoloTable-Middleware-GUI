@@ -1,4 +1,6 @@
-# GUI to be used alongside the [HoloTable Middleware](https://github.com/METIL-HoloAI/HoloTable-Middleware)
+# GUI for the [HoloTable Middleware](https://github.com/METIL-HoloAI/HoloTable-Middleware)
+This desktop application allows users configure the APIs for the Middleware (STT, Content Generation, etc.) and to input text or speech through the front end. 
+
 Built with [this](https://github.com/alysonhower/tauri2-svelte5-shadcn) boilerplate for Tauri 2 with Svelte 5 (and shadcn-svelte) using Bun runtime.
 
 ## Prerequisites
