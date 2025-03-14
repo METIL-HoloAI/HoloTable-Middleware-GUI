@@ -18,10 +18,17 @@
 		<Card.Header class="space-y-2">
 			<Card.Title class="text-3xl font-bold text-center text-white">
 				<div class="flex flex-row space-x-2 place-content-between">
-					<p>Settings</p>
-					<a href="/" class="hover:scale-110 hover:opacity-90 transition-all duration-200">
-						<CornerDownLeftIcon class="mt-2" />
-					</a>
+					<p>API Settings</p>
+					<Tooltip.Root openDelay={100}>
+						<Tooltip.Trigger
+							><a href="/">
+								<CornerDownLeftIcon class="mt-2" />
+							</a></Tooltip.Trigger
+						>
+						<Tooltip.Content>
+							<p>Return to Prompting</p>
+						</Tooltip.Content>
+					</Tooltip.Root>
 				</div>
 			</Card.Title>
 		</Card.Header>

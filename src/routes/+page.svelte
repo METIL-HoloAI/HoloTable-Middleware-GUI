@@ -40,11 +40,16 @@ implement with frontend:
 						>
 							METIL HoloTable
 						</h1>
-						<a href="/settings">
-							<SettingsIcon
-								class="mt-2 hover:opacity-80 hover:scale-110 transition-all duration-200 text-white"
-							/>
-						</a>
+						<Tooltip.Root openDelay={100}>
+							<Tooltip.Trigger
+								><a href="/settings">
+									<SettingsIcon class="mt-2 text-white" />
+								</a></Tooltip.Trigger
+							>
+							<Tooltip.Content>
+								<p>Configure API Settings</p>
+							</Tooltip.Content>
+						</Tooltip.Root>
 					</div>
 				</Card.Title>
 				<div class="flex flex-row text-white">
