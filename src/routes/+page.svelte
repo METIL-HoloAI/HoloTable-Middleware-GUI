@@ -5,6 +5,7 @@
 	import { SettingsIcon } from '@lucide/svelte';
 	import SpeechInput from './SpeechInput.svelte';
 	import TextInput from './TextInput.svelte';
+	import * as Tooltip from '$lib/components/ui/tooltip';
 
 	const gs = new GlobalState();
 
