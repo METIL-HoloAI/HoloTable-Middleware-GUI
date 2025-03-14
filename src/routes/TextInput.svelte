@@ -5,6 +5,7 @@
 	import { SendHorizontalIcon } from '@lucide/svelte';
 	import { Textarea } from '$lib/components/ui/textarea/index.js';
 	import { toast } from 'svelte-sonner';
+	import { fade } from 'svelte/transition';
 
 	const gs = new GlobalState();
 
@@ -43,7 +44,7 @@
 
 <div>
 	<Card.Content class="p-6">
-		<form {onsubmit} class="space-y-3">
+		<form {onsubmit} class="space-y-3" in:fade={{ duration: 200 }}>
 			<div class="relative items-center space-x-2">
 				<Textarea
 					placeholder="Enter a prompt for the HoloTable here."
