@@ -61,7 +61,7 @@
 			<div class="flex justify-end">
 				<Button
 					onclick={onReset}
-					class="w-1/2 bg-red-900/75 hover:bg-red-800/75 text-white transition-all duration-200"
+					class="md:w-1/3  w-1/2 bg-red-900/75 hover:bg-red-800/75 text-white transition-all duration-200"
 				>
 					Clear
 				</Button>
