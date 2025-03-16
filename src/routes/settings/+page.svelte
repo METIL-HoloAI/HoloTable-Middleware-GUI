@@ -51,8 +51,11 @@
 					throw new Error(`HTTP error ${response.status}`);
 				}
 				yamlContent = await response.text();
+				return true;
 			} catch (error) {
 				console.error('Error fetching YAML:', error);
+				yamlContent = 'Failed to fetch configuration file. Is the go server running?';
+				return false;
 			}
 		} else {
 			try {
@@ -66,8 +69,11 @@
 					throw new Error(`HTTP error ${response.status}`);
 				}
 				yamlContent = await response.text();
+				return true;
 			} catch (error) {
 				console.error('Error fetching YAML:', error);
+				yamlContent = 'Failed to fetch configuration file. Is the go server running?';
+				return false;
 			}
 		}
 	}
@@ -111,7 +117,7 @@
 			{/if}
 
 			{#if yamlContent}
-				<pre>{yamlContent}</pre>
+				<p>{yamlContent}</p>
 			{/if}
 		</ScrollArea>
 		{#if gs.selectedConfig !== ''}
