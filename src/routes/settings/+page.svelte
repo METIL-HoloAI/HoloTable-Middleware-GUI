@@ -8,6 +8,7 @@
 
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
+	import ScrollAreaScrollbar from '$lib/components/ui/scroll-area/scroll-area-scrollbar.svelte';
 
 	const gs = new GlobalState();
 
@@ -100,7 +101,9 @@
 				</div>
 			</Card.Title>
 		</Card.Header>
-		<ScrollArea class="h-3/4 mt-4 rounded-md border bg-slate-900/75 text-white overflow-visible">
+		<ScrollArea
+			class="h-5/6 mt-4 rounded-md border bg-slate-900/75 text-white overflow-visible overflow-x-visible"
+		>
 			{#if gs.selectedConfig === ''}
 				<div class="p-4" in:fade={{ duration: 200 }}>
 					{#each configs as config}
@@ -119,6 +122,7 @@
 			{#if yamlContent}
 				<p>{yamlContent}</p>
 			{/if}
+			<ScrollAreaScrollbar orientation="horizontal" />
 		</ScrollArea>
 		{#if gs.selectedConfig !== ''}
 			<Button onclick={onReset}>Cancel</Button>
