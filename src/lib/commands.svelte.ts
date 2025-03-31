@@ -8,7 +8,12 @@ export const preventDefault = <T extends Event>(fn: (e: T) => void): ((e: T) => 
 };
 
 export class GlobalState {
-	private _state = $state({ prompt: '', selectedConfig: '', selectedConfigDirectory: '' });
+	private _state = $state({
+		prompt: '',
+		selectedConfig: '',
+		selectedConfigDirectory: '',
+		yamlContent: ''
+	});
 	public isVoiceInput = $state(false);
 
 	get prompt() {
@@ -31,6 +36,12 @@ export class GlobalState {
 	}
 	set selectedConfigDirectory(value: string) {
 		this._state.selectedConfigDirectory = value;
+	}
+	get yamlContent() {
+		return this._state.yamlContent;
+	}
+	set yamlContent(value: string) {
+		this._state.yamlContent = value;
 	}
 
 	// async submit() {
