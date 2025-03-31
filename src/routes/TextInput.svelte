@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ws } from '$lib/websocket';
 	import { GlobalState, preventDefault } from '$lib';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
@@ -17,6 +18,7 @@
 			toast.error('Prompt is currently empty.');
 		} else {
 			gs.submit();
+			sendText();
 			toast.success('Prompt has been sent.');
 		}
 	};
@@ -40,6 +42,15 @@
 			});
 		}
 	};
+
+	function sendText(): void {
+		ws.subscribe((socket) => {
+			if (socket && socket.readyState === WebSocket.OPEN) {
+				socket.send(gs.prompt);
+				gs.prompt = '';
+			}
+		});
+	}
 </script>
 
 <div>
