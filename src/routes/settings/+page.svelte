@@ -5,6 +5,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { fade } from 'svelte/transition';
+	import { toast } from 'svelte-sonner';
 
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
@@ -80,6 +81,27 @@
 			}
 		}
 	}
+
+	async function updateYaml() {
+		try {
+			const response = await fetch(`http://localhost:8000/config/${gs.selectedConfig}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'text/plain'
+				},
+				body: yamlContent
+			});
+			if (!response.ok) {
+				throw new Error(`HTTP error ${response.status}`);
+			}
+			const result = await response.text();
+			console.log('Update successful:', result);
+			toast.success('YAML has been updated.');
+			onReset();
+		} catch (error) {
+			console.error('Error updating YAML:', error);
+		}
+	}
 </script>
 
 <div
@@ -126,11 +148,10 @@
 				>
 				</textarea>
 			{/if}
-			<ScrollAreaScrollbar orientation="horizontal" />
-		</ScrollArea>
+		</div>
 		{#if gs.selectedConfig !== ''}
 			<Button onclick={onReset}>Cancel</Button>
-			<Button>Apply</Button>
+			<Button onclick={updateYaml}>Apply</Button>
 		{/if}
 	</Card.Root>
 </div>
