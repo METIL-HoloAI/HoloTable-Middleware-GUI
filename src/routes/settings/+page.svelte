@@ -41,6 +41,7 @@
 	};
 
 	let yamlContent = '';
+	let code = yamlContent;
 
 	async function loadYaml() {
 		if (gs.selectedConfigDirectory === '') {
@@ -52,6 +53,7 @@
 					throw new Error(`HTTP error ${response.status}`);
 				}
 				yamlContent = await response.text();
+				code = yamlContent;
 				return true;
 			} catch (error) {
 				console.error('Error fetching YAML:', error);
@@ -101,9 +103,7 @@
 				</div>
 			</Card.Title>
 		</Card.Header>
-		<ScrollArea
-			class="h-5/6 mt-4 rounded-md border bg-slate-900/75 text-white overflow-visible overflow-x-visible"
-		>
+		<div class="h-5/6 mt-4 rounded-md border bg-slate-900/75 text-white overflow-hidden">
 			{#if gs.selectedConfig === ''}
 				<div class="p-4" in:fade={{ duration: 200 }}>
 					{#each configs as config}
@@ -120,7 +120,11 @@
 			{/if}
 
 			{#if yamlContent}
-				<p>{yamlContent}</p>
+				<textarea
+					bind:value={yamlContent}
+					class="w-full h-full bg-transparent overflow-auto resize-none"
+				>
+				</textarea>
 			{/if}
 			<ScrollAreaScrollbar orientation="horizontal" />
 		</ScrollArea>
