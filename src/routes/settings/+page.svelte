@@ -42,7 +42,6 @@
 	};
 
 	let yamlContent = '';
-	let code = yamlContent;
 
 	async function loadYaml() {
 		if (gs.selectedConfigDirectory === '') {
@@ -54,7 +53,6 @@
 					throw new Error(`HTTP error ${response.status}`);
 				}
 				yamlContent = await response.text();
-				code = yamlContent;
 				return true;
 			} catch (error) {
 				console.error('Error fetching YAML:', error);
