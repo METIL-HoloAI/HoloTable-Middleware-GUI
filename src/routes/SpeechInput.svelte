@@ -19,6 +19,28 @@
 	let audioContext: AudioContext | null = null;
 	let mediaStream: MediaStream | null = null;
 	let scriptProcessor: ScriptProcessorNode | null = null;
+	let keyword: string;
+
+	async function fetchKeyword() {
+		try {
+			const response = await fetch(`http://localhost:8000/config/keyword`, {
+				method: 'GET'
+			});
+			if (!response.ok) {
+				throw new Error(`HTTP error ${response.status}`);
+			}
+			keyword = await response.text();
+			return true;
+		} catch (error) {
+			console.error('Error fetching keyword:', error);
+			keyword = 'Failed to fetch keyword. Is the go server running?';
+			return false;
+		}
+	}
+
+	onMount(() => {
+		fetchKeyword();
+	});
 
 	function startRecording(): void {
 		if (!browser) return;
@@ -125,11 +147,12 @@
 	}
 </script>
 
-<Card.Content class="p-6">
-	<Button class="bg-white text-black hover:bg-white/75" on:click={startRecording}
-		>Start Listening</Button
-	>
-	<Button class="bg-gray-800 text-white hover:bg-gray-800/75" on:click={stopRecording}
-		>Stop Listening</Button
-	>
-</Card.Content>
+<div>
+	<Card.Content class="p-6">
+		<p class="text-white">Keyword: {keyword}</p>
+		<div class="flex flex-row gap-10 mt-4">
+			<Button on:click={startRecording}>Start Listening</Button>
+			<Button on:click={stopRecording}>Stop Listening</Button>
+		</div>
+	</Card.Content>
+</div>
