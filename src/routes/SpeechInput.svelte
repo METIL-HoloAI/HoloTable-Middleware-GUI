@@ -149,7 +149,7 @@
 
 <div>
 	<Card.Content class="p-6">
-		<p class="text-white">Keyword: {keyword}</p>
+		<p class="text-white">Keyword: <b>{keyword}</b></p>
 		<div class="flex flex-row gap-10 mt-4">
 			<Button on:click={startRecording}>Start Listening</Button>
 			<Button on:click={stopRecording}>Stop Listening</Button>
