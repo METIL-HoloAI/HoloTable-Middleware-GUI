@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { GlobalState, preventDefault } from '$lib';
+	import { GlobalState } from '$lib';
 	import { Switch } from '$lib/components/ui/switch/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { SettingsIcon } from '@lucide/svelte';
