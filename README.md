@@ -80,7 +80,3 @@ bun run tauri build
 
 Then open the executable file.
 With the Go server and Docker image running, the frontend should be able to send prompts through text/voice, as well as fetch/update configuration files.
-
-### note:
-
-STT does not work when running the dev server locally at the moment and only works with the executable file. This seems to be due to Tauri permission issues.
