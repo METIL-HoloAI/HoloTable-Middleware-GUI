@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { MicIcon, MicOff, MicOffIcon } from '@lucide/svelte';
+	import { toast } from 'svelte-sonner';
 	import { fade } from 'svelte/transition';
 
 	let RecordRTC: any;
@@ -59,6 +60,7 @@
 				.then((stream: MediaStream) => {
 					mediaStream = stream;
 					gs.isRecording = true;
+					toast.success('Recording has started.');
 
 					audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
 					console.log('Audio context sample rate:', audioContext.sampleRate);
@@ -128,6 +130,7 @@
 				.close()
 				.then(() => {
 					console.log('AudioContext closed');
+					toast.message('Recording stopped.');
 					gs.isRecording = false;
 					gs.keywordDetected = false;
 				})
