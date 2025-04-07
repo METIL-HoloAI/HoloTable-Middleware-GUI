@@ -12,6 +12,8 @@ export class GlobalState {
 		prompt: '',
 		selectedConfig: '',
 		selectedConfigDirectory: '',
+		yamlContent: '',
+		keywordDetected: false,
 		isRecording: false
 	});
 	public isVoiceInput = $state(false);
@@ -42,6 +44,18 @@ export class GlobalState {
 	}
 	set yamlContent(value: string) {
 		this._state.yamlContent = value;
+	}
+	get keywordDetected() {
+		return this._state.keywordDetected;
+	}
+	set keywordDetected(value: boolean) {
+		this._state.keywordDetected = value;
+	}
+	get isRecording() {
+		return this._state.isRecording;
+	}
+	set isRecording(value: boolean) {
+		this._state.isRecording = value;
 	}
 
 	// async submit() {
