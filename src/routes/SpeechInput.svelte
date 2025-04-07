@@ -5,6 +5,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { MicIcon, MicOff, MicOffIcon } from '@lucide/svelte';
+	import { fade } from 'svelte/transition';
 
 	let RecordRTC: any;
 	if (browser) {
@@ -148,10 +149,12 @@
 	}
 </script>
 
-<div>
+<div in:fade={{ duration: 200 }}>
 	<Card.Content class="p-6">
-		<p class="text-white">Keyword: <b>{keyword}</b></p>
-		<div class="flex flex-row gap-10 mt-4">
+		<p class="text-white">
+			Keyword: <b>{keyword}</b>
+		</p>
+		<div class="flex flex-row items-center gap-10 mt-4">
 			<Button onclick={startRecording}>Start Listening</Button>
 			<Button onclick={stopRecording}>Stop Listening</Button>
 			{#if gs.isRecording}
