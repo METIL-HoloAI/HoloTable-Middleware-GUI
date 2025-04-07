@@ -21,12 +21,7 @@
 </script>
 
 <!-- left to do:
-- work on config editing ui
-
-implement with frontend:
-- text prompting functionality
-- config editing functionality
-- STT functionality
+- bug: keyword not updating, should be refreshed with gavin function
 -->
 <div class="relative h-full w-full bg-slate-950">
 	<div
