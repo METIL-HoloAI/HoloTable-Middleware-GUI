@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { GlobalState, preventDefault } from '$lib';
+	import { GlobalState } from '$lib';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { CornerDownLeftIcon } from '@lucide/svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { fade } from 'svelte/transition';
 	import { toast } from 'svelte-sonner';
-
-	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
-	import ScrollAreaScrollbar from '$lib/components/ui/scroll-area/scroll-area-scrollbar.svelte';
+	import YAML from 'yaml';
+	import SettingNode from './SettingNode.svelte';
 
 	const gs = new GlobalState();
 
@@ -27,77 +26,83 @@
 		{ name: 'videoworkflow', directory: 'contentgen_workflows' }
 	];
 
-	const configClicked = (config: string, configDirectory: string) => {
+	let settings: Record<string, any> = {}; // editable JSON representation
+	let yamlRaw = '';
+	let doc: ReturnType<typeof YAML.parseDocument> | null = null; // YAML AST (keeps comments)
+	let parseError = '';
+
+	function setNested(obj: any, path: (string | number)[], val: any) {
+		let target = obj;
+		for (let i = 0; i < path.length - 1; i++) {
+			target = target[path[i]];
+		}
+		target[path[path.length - 1]] = val;
+	}
+
+	function updateSetting(path: (string | number)[], val: any) {
+		// 1. update JSON used for the UI
+		setNested(settings, path, val);
+		settings = settings; // trigger reactivity
+
+		// 2. update YAML AST so comments remain intact
+		doc?.setIn(path, val);
+	}
+
+	const configClicked = (config: string, directory: string) => {
 		gs.selectedConfig = config;
-		gs.selectedConfigDirectory = configDirectory;
-		console.log(
-			'selected config: ' + gs.selectedConfig + ' with directory: ' + gs.selectedConfigDirectory
-		);
+		gs.selectedConfigDirectory = directory;
 		loadYaml();
 	};
 
 	const onReset = () => {
 		gs.reset();
-		yamlContent = '';
+		settings = {};
+		yamlRaw = '';
+		doc = null;
+		parseError = '';
 	};
 
-	let yamlContent = '';
-
 	async function loadYaml() {
-		if (gs.selectedConfigDirectory === '') {
-			try {
-				const response = await fetch(`http://localhost:8000/config/${gs.selectedConfig}`, {
-					method: 'GET'
-				});
-				if (!response.ok) {
-					throw new Error(`HTTP error ${response.status}`);
-				}
-				yamlContent = await response.text();
-				return true;
-			} catch (error) {
-				console.error('Error fetching YAML:', error);
-				yamlContent = 'Failed to fetch configuration file. Is the go server running?';
-				return false;
-			}
-		} else {
-			try {
-				const response = await fetch(
-					`http://localhost:8000/config/${gs.selectedConfigDirectory}/${gs.selectedConfig}`,
-					{
-						method: 'GET'
-					}
-				);
-				if (!response.ok) {
-					throw new Error(`HTTP error ${response.status}`);
-				}
-				yamlContent = await response.text();
-				return true;
-			} catch (error) {
-				console.error('Error fetching YAML:', error);
-				yamlContent = 'Failed to fetch configuration file. Is the go server running?';
-				return false;
-			}
+		const path =
+			gs.selectedConfigDirectory === ''
+				? `http://localhost:8000/config/${gs.selectedConfig}`
+				: `http://localhost:8000/config/${gs.selectedConfigDirectory}/${gs.selectedConfig}`;
+
+		try {
+			const response = await fetch(path);
+			if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+			yamlRaw = await response.text();
+			doc = YAML.parseDocument(yamlRaw);
+			settings = doc.toJSON() ?? {};
+			parseError = '';
+		} catch (err) {
+			console.error(err);
+			parseError = 'Failed to fetch or parse YAML. Is the Go server running?';
 		}
 	}
 
 	async function updateYaml() {
+		if (!doc) return;
+
+		const body = String(doc); // YAML string w/ comments
+		const path =
+			gs.selectedConfigDirectory === ''
+				? `http://localhost:8000/config/${gs.selectedConfig}`
+				: `http://localhost:8000/config/${gs.selectedConfigDirectory}/${gs.selectedConfig}`;
+
 		try {
-			const response = await fetch(`http://localhost:8000/config/${gs.selectedConfig}`, {
+			const response = await fetch(path, {
 				method: 'PUT',
-				headers: {
-					'Content-Type': 'text/plain'
-				},
-				body: yamlContent
+				headers: { 'Content-Type': 'text/plain' },
+				body
 			});
-			if (!response.ok) {
-				throw new Error(`HTTP error ${response.status}`);
-			}
-			const result = await response.text();
-			console.log('Update successful:', result);
+			if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
 			toast.success('YAML has been updated.');
 			onReset();
-		} catch (error) {
-			console.error('Error updating YAML:', error);
+		} catch (err) {
+			console.error('Update failed:', err);
 		}
 	}
 </script>
@@ -111,11 +116,11 @@
 				<div class="flex flex-row space-x-2 place-content-between">
 					<p>API Settings</p>
 					<Tooltip.Root openDelay={100}>
-						<Tooltip.Trigger
-							><a href="/">
+						<Tooltip.Trigger>
+							<a href="/">
 								<CornerDownLeftIcon class="mt-2" />
-							</a></Tooltip.Trigger
-						>
+							</a>
+						</Tooltip.Trigger>
 						<Tooltip.Content>
 							<p>Return to Prompting</p>
 						</Tooltip.Content>
@@ -123,7 +128,8 @@
 				</div>
 			</Card.Title>
 		</Card.Header>
-		<div class="h-5/6 mt-4 rounded-md border bg-slate-900/75 text-white overflow-hidden">
+
+		<div class="h-5/6 mt-4 rounded-md border bg-slate-900/75 text-white overflow-auto">
 			{#if gs.selectedConfig === ''}
 				<div class="p-4" in:fade={{ duration: 200 }}>
 					{#each configs as config}
@@ -137,19 +143,21 @@
 						<Separator />
 					{/each}
 				</div>
-			{/if}
-
-			{#if yamlContent}
-				<textarea
-					bind:value={yamlContent}
-					class="w-full h-full bg-transparent overflow-auto resize-none"
-				>
-				</textarea>
+			{:else if parseError}
+				<p class="p-4 text-red-400">{parseError}</p>
+			{:else}
+				<!-- Recursive editor -->
+				<div class="p-4 overflow-auto h-full">
+					<SettingNode value={settings} path={[]} {updateSetting} />
+				</div>
 			{/if}
 		</div>
+
 		{#if gs.selectedConfig !== ''}
-			<Button onclick={onReset}>Cancel</Button>
-			<Button onclick={updateYaml}>Apply</Button>
+			<div class="flex justify-end space-x-2 mt-2">
+				<Button onclick={onReset}>Cancel</Button>
+				<Button onclick={updateYaml}>Apply</Button>
+			</div>
 		{/if}
 	</Card.Root>
 </div>
