@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { GlobalState } from '$lib';
 	import { browser } from '$app/environment';
-	import { ws, connectWebsocket } from '$lib/websocket';
-	import { get } from 'svelte/store';
 	import * as Card from '$lib/components/ui/card/index.js';
+	import { onMount } from 'svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { MicIcon, MicOff, MicOffIcon } from '@lucide/svelte';
 	import { fade } from 'svelte/transition';
@@ -18,9 +18,11 @@
 			});
 	}
 
+	let ws: WebSocket | null = null;
 	let audioContext: AudioContext | null = null;
 	let mediaStream: MediaStream | null = null;
 	let scriptProcessor: ScriptProcessorNode | null = null;
+	let keyword: string = '';
 	const gs = new GlobalState();
 
 	async function fetchKeyword() {
@@ -47,75 +49,72 @@
 	function startRecording(): void {
 		if (!browser) return;
 
-		// Establish the connection from the library.
-		connectWebsocket();
-		// Wait a short moment to ensure the connection is set
-		setTimeout(() => {
-			const socket = get(ws);
-			if (!socket) {
-				console.error('WebSocket not connected');
-				return;
-			}
-			// Attach message and error handlers
-			socket.onmessage = (event: MessageEvent) => {
-				try {
-					if (typeof event.data === 'string') {
-						const message = event.data;
-						console.log('Received message:', message);
-						if (message === 'Keyword Detected') {
-							console.log('Wake word detected!');
-							alert('Wake word detected!');
+		ws = new WebSocket('ws://localhost:8080/ws');
+		ws.binaryType = 'arraybuffer';
+
+		ws.onopen = () => {
+			console.log('Connected to WebSocket server');
+			navigator.mediaDevices
+				.getUserMedia({ audio: true })
+				.then((stream: MediaStream) => {
+					mediaStream = stream;
+					gs.isRecording = true;
+
+					audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+					console.log('Audio context sample rate:', audioContext.sampleRate);
+
+					const source = audioContext.createMediaStreamSource(stream);
+					scriptProcessor = audioContext.createScriptProcessor(4096, 1, 1);
+
+					source.connect(scriptProcessor);
+					scriptProcessor.connect(audioContext.destination);
+
+					scriptProcessor.onaudioprocess = (e: AudioProcessingEvent) => {
+						if (ws && ws.readyState === WebSocket.OPEN && audioContext) {
+							const inputData = e.inputBuffer.getChannelData(0);
+							const factor = Math.round(audioContext.sampleRate / 16000);
+							const downsampledLength = Math.floor(inputData.length / factor);
+							const downsampled = new Float32Array(downsampledLength);
+
+							for (let i = 0; i < downsampledLength; i++) {
+								downsampled[i] = inputData[i * factor];
+							}
+
+							const pcmData = new Int16Array(downsampled.length);
+							for (let i = 0; i < downsampled.length; i++) {
+								const s = Math.max(-1, Math.min(1, downsampled[i]));
+								pcmData[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+							}
+
+							ws.send(pcmData.buffer);
 						}
+					};
+				})
+				.catch((err: Error) => {
+					console.error('Error accessing microphone:', err);
+				});
+		};
+
+		ws.onmessage = (event: MessageEvent) => {
+			try {
+				if (typeof event.data === 'string') {
+					const message = event.data;
+					console.log('Received message:', message);
+					if (message === 'Keyword detected') {
+						// console.log('Wake word detected!');
+						gs.keywordDetected = true;
+						// alert('Wake word detected!');
+						toast.success('Keyword Detected! Proceed with your prompt.', { duration: 4000 });
 					}
-				} catch (e) {
-					console.error('Error parsing message:', e);
 				}
-			};
+			} catch (e) {
+				console.error('Error parsing message:', e);
+			}
+		};
 
-			socket.onerror = (error: Event) => {
-				console.error('WebSocket error:', error);
-			};
-		}, 100);
-
-		navigator.mediaDevices
-			.getUserMedia({ audio: true })
-			.then((stream: MediaStream) => {
-				mediaStream = stream;
-
-				audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-				console.log('Audio context sample rate:', audioContext.sampleRate);
-
-				const source = audioContext.createMediaStreamSource(stream);
-				scriptProcessor = audioContext.createScriptProcessor(4096, 1, 1);
-
-				source.connect(scriptProcessor);
-				scriptProcessor.connect(audioContext.destination);
-
-				scriptProcessor.onaudioprocess = (e: AudioProcessingEvent) => {
-					const socket = get(ws);
-					if (socket && socket.readyState === WebSocket.OPEN && audioContext) {
-						const inputData = e.inputBuffer.getChannelData(0);
-						const factor = Math.round(audioContext.sampleRate / 16000);
-						const downsampledLength = Math.floor(inputData.length / factor);
-						const downsampled = new Float32Array(downsampledLength);
-
-						for (let i = 0; i < downsampledLength; i++) {
-							downsampled[i] = inputData[i * factor];
-						}
-
-						const pcmData = new Int16Array(downsampled.length);
-						for (let i = 0; i < downsampled.length; i++) {
-							const s = Math.max(-1, Math.min(1, downsampled[i]));
-							pcmData[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
-						}
-
-						socket.send(pcmData.buffer);
-					}
-				};
-			})
-			.catch((err: Error) => {
-				console.error('Error accessing microphone:', err);
-			});
+		ws.onerror = (error: Event) => {
+			console.error('WebSocket error:', error);
+		};
 	}
 
 	function stopRecording(): void {
@@ -129,6 +128,8 @@
 				.close()
 				.then(() => {
 					console.log('AudioContext closed');
+					gs.isRecording = false;
+					gs.keywordDetected = false;
 				})
 				.catch((err: Error) => {
 					console.error('Error closing AudioContext:', err);
@@ -141,10 +142,9 @@
 			mediaStream = null;
 		}
 
-		// Close the global WebSocket
-		const socket = get(ws);
-		if (socket) {
-			socket.close();
+		if (ws) {
+			ws.close();
+			ws = null;
 		}
 	}
 </script>
