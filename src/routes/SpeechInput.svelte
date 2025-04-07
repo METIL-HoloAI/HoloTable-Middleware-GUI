@@ -4,6 +4,7 @@
 	import { get } from 'svelte/store';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { MicIcon, MicOff, MicOffIcon } from '@lucide/svelte';
 
 	let RecordRTC: any;
 	if (browser) {
@@ -19,7 +20,7 @@
 	let audioContext: AudioContext | null = null;
 	let mediaStream: MediaStream | null = null;
 	let scriptProcessor: ScriptProcessorNode | null = null;
-	let keyword: string;
+	const gs = new GlobalState();
 
 	async function fetchKeyword() {
 		try {
@@ -153,6 +154,11 @@
 		<div class="flex flex-row gap-10 mt-4">
 			<Button onclick={startRecording}>Start Listening</Button>
 			<Button onclick={stopRecording}>Stop Listening</Button>
+			{#if gs.isRecording}
+				<MicIcon color="#ffffff" />
+			{:else if !gs.isRecording}
+				<MicOffIcon color="#ff2929" />
+			{/if}
 		</div>
 	</Card.Content>
 </div>

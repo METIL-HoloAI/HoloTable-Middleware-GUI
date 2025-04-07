@@ -12,7 +12,7 @@ export class GlobalState {
 		prompt: '',
 		selectedConfig: '',
 		selectedConfigDirectory: '',
-		yamlContent: ''
+		isRecording: false
 	});
 	public isVoiceInput = $state(false);
 
