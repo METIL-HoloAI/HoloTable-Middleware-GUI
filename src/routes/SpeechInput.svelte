@@ -4,7 +4,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { onMount } from 'svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { MicIcon, MicOff, MicOffIcon } from '@lucide/svelte';
+	import { MicIcon, MicOffIcon } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 	import { fade } from 'svelte/transition';
 
@@ -103,9 +103,8 @@
 					const message = event.data;
 					console.log('Received message:', message);
 					if (message === 'Keyword detected') {
-						// console.log('Wake word detected!');
+						console.log('Wake word detected!');
 						gs.keywordDetected = true;
-						// alert('Wake word detected!');
 						toast.success('Keyword Detected! Proceed with your prompt.', { duration: 4000 });
 					}
 				}
