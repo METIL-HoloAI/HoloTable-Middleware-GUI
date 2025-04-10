@@ -60,7 +60,7 @@
 				.then((stream: MediaStream) => {
 					mediaStream = stream;
 					gs.isRecording = true;
-					toast.success('Recording has started.');
+					toast.success('Recording has started.', { duration: 4000 });
 
 					audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
 					console.log('Audio context sample rate:', audioContext.sampleRate);
