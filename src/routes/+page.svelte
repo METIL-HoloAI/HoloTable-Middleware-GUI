@@ -6,13 +6,21 @@
 	import SpeechInput from './SpeechInput.svelte';
 	import TextInput from './TextInput.svelte';
 	import * as Tooltip from '$lib/components/ui/tooltip';
+	import { fetchKeyword } from '$lib/utils/fetchKeyword';
 
 	const gs = new GlobalState();
+
+	async function refreshKeyword() {
+		const newKeyword = await fetchKeyword();
+		gs.keyword = newKeyword;
+		console.log('Refreshed keyword:', gs.keyword);
+	}
 
 	const onSwitch = () => {
 		let inputMode: string;
 		if (gs.isVoiceInput == true) {
 			inputMode = 'STT';
+			refreshKeyword();
 		} else {
 			inputMode = 'text';
 		}
