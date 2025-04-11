@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ws } from '$lib/websocket';
-	import { GlobalState, preventDefault } from '$lib';
+	import { GlobalState } from '$lib';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { SendHorizontalIcon } from '@lucide/svelte';
@@ -10,9 +10,6 @@
 
 	const gs = new GlobalState();
 
-	$inspect(gs.prompt);
-
-	// const onsubmit = preventDefault(() => gs.nlen && gs.submit());
 	const onsubmit = () => {
 		if (gs.prompt === '') {
 			toast.error('Prompt is currently empty.');
