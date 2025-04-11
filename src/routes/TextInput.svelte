@@ -10,6 +10,13 @@
 
 	const gs = new GlobalState();
 
+	const keydown = (event: KeyboardEvent) => {
+		if (event.key === 'Enter' && !event.shiftKey) {
+			event.preventDefault();
+			onsubmit();
+		}
+	};
+
 	const onsubmit = () => {
 		if (gs.prompt === '') {
 			toast.error('Prompt is currently empty.');
@@ -58,6 +65,7 @@
 					placeholder="Enter a prompt for the HoloTable here."
 					id="message-2"
 					bind:value={gs.prompt}
+					on:keypress={keydown}
 				/>
 				<Button
 					type="submit"
