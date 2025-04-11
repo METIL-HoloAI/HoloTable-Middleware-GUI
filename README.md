@@ -38,10 +38,17 @@ bun run tauri dev
 bun run pnpm dev --open
 ```
 
-### Build executable file
+### Build executable file for your current OS
 
 ```
 bun run tauri build
+```
+
+### Build executable file for Windows from MacOS [EXPERIMENTAL]
+More info on building the application for operating systems different from your own can be found here: https://v2.tauri.app/distribute/windows-installer/
+
+```
+bun tauri build --runner cargo-xwin --target x86_64-pc-windows-msvc
 ```
 
 ## Other links
