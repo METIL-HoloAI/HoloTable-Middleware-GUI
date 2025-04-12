@@ -22,10 +22,10 @@
 		{ name: 'gifgen', directory: 'contentgen_yamls' },
 		{ name: 'imagegen', directory: 'contentgen_yamls' },
 		{ name: 'videogen', directory: 'contentgen_yamls' },
-		{ name: '3dworkflow', directory: 'contentgen_workflows' },
-		{ name: 'gifworkflow', directory: 'contentgen_workflows' },
-		{ name: 'imageworkflow', directory: 'contentgen_workflows' },
-		{ name: 'videoworkflow', directory: 'contentgen_workflows' }
+		{ name: '3dWorkflow', directory: 'contentgen_workflows' },
+		{ name: 'gifWorkflow', directory: 'contentgen_workflows' },
+		{ name: 'imageWorkflow', directory: 'contentgen_workflows' },
+		{ name: 'videoWorkflow', directory: 'contentgen_workflows' }
 	];
 
 	let settings: Record<string, any> = {}; // editable JSON representation
