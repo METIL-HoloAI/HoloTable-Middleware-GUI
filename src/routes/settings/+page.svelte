@@ -9,6 +9,8 @@
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import YAML from 'yaml';
 	import SettingNode from './SettingNode.svelte';
+	import { Switch } from '$lib/components/ui/switch/index.js';
+	// switch will allow user to show raw YAML. Disable switch if it failed to parse and display YAML by default.
 
 	const gs = new GlobalState();
 
@@ -105,6 +107,15 @@
 			console.error('Update failed:', err);
 		}
 	}
+	const onSwitch = () => {
+		let showYaml: boolean;
+		if (gs.showRawYaml == true) {
+			showYaml = true;
+		} else {
+			showYaml = false;
+		}
+		console.log('showYaml: ' + showYaml);
+	};
 </script>
 
 <div
@@ -114,7 +125,28 @@
 		<Card.Header class="space-y-2">
 			<Card.Title class="text-3xl font-bold text-center text-white">
 				<div class="flex flex-row space-x-2 place-content-between">
-					<p>API Settings</p>
+					<div class="flex flex-row space-x-2">
+						<p>API Settings</p>
+						<Tooltip.Root openDelay={100}>
+							<Tooltip.Trigger
+								><Switch
+									checked={gs.showRawYaml}
+									onCheckedChange={(checked: boolean) => {
+										gs.showRawYaml = checked;
+										onSwitch();
+									}}
+									class="hover:opacity-80 transition-all duration-200 self-center"
+								/></Tooltip.Trigger
+							>
+							<Tooltip.Content>
+								{#if gs.showRawYaml}
+									<p>Show parsed YAML</p>
+								{:else}
+									<p>Show raw YAML</p>
+								{/if}
+							</Tooltip.Content>
+						</Tooltip.Root>
+					</div>
 					<Tooltip.Root openDelay={100}>
 						<Tooltip.Trigger>
 							<a href="/">
@@ -145,8 +177,14 @@
 				</div>
 			{:else if parseError}
 				<p class="p-4 text-red-400">{parseError}</p>
+			{:else if gs.showRawYaml}
+				<textarea
+					bind:value={doc}
+					class="w-full h-full p-4 bg-slate-800 text-white outline-none resize-none"
+					>{yamlRaw}</textarea
+				>
 			{:else}
-				<!-- Recursive editor -->
+				<!-- Parsed YAML rendered recursively -->
 				<div class="p-4 overflow-auto h-full">
 					<SettingNode value={settings} path={[]} {updateSetting} />
 				</div>
