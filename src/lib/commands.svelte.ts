@@ -15,7 +15,8 @@ export class GlobalState {
 		yamlContent: '',
 		keywordDetected: false,
 		isRecording: false,
-		keyword: ''
+		keyword: '',
+		showRawYaml: false
 	});
 	public isVoiceInput = $state(false);
 
@@ -63,6 +64,12 @@ export class GlobalState {
 	}
 	set keyword(value: string) {
 		this._state.keyword = value;
+	}
+	get showRawYaml() {
+		return this._state.showRawYaml;
+	}
+	set showRawYaml(value: boolean) {
+		this._state.showRawYaml = value;
 	}
 
 	// async submit() {
