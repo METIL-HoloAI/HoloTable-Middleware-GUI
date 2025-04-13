@@ -127,25 +127,27 @@
 				<div class="flex flex-row space-x-2 place-content-between">
 					<div class="flex flex-row space-x-2">
 						<p>API Settings</p>
-						<Tooltip.Root openDelay={100}>
-							<Tooltip.Trigger
-								><Switch
-									checked={gs.showRawYaml}
-									onCheckedChange={(checked: boolean) => {
-										gs.showRawYaml = checked;
-										onSwitch();
-									}}
-									class="hover:opacity-80 transition-all duration-200 self-center"
-								/></Tooltip.Trigger
-							>
-							<Tooltip.Content>
-								{#if gs.showRawYaml}
-									<p>Show parsed YAML</p>
-								{:else}
-									<p>Show raw YAML</p>
-								{/if}
-							</Tooltip.Content>
-						</Tooltip.Root>
+						{#if gs.selectedConfig != ''}
+							<Tooltip.Root openDelay={50}>
+								<Tooltip.Trigger
+									><Switch
+										checked={gs.showRawYaml}
+										onCheckedChange={(checked: boolean) => {
+											gs.showRawYaml = checked;
+											onSwitch();
+										}}
+										class="hover:opacity-80 transition-all duration-200 self-center"
+									/></Tooltip.Trigger
+								>
+								<Tooltip.Content>
+									{#if gs.showRawYaml}
+										<p>Show parsed YAML</p>
+									{:else}
+										<p>Show raw YAML</p>
+									{/if}
+								</Tooltip.Content>
+							</Tooltip.Root>
+						{/if}
 					</div>
 					<Tooltip.Root openDelay={100}>
 						<Tooltip.Trigger>
