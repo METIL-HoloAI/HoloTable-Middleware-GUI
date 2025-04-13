@@ -183,11 +183,11 @@
 				<textarea
 					bind:value={doc}
 					class="w-full h-full p-4 bg-slate-800 text-white outline-none resize-none"
-					>{yamlRaw}</textarea
+					in:fade={{ duration: 200 }}>{yamlRaw}</textarea
 				>
 			{:else}
 				<!-- Parsed YAML rendered recursively -->
-				<div class="p-4 overflow-auto h-full">
+				<div class="p-4 overflow-auto h-full" in:fade={{ duration: 200 }}>
 					<SettingNode value={settings} path={[]} {updateSetting} />
 				</div>
 			{/if}
