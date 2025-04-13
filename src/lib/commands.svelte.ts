@@ -1,5 +1,3 @@
-import { invoke } from '@tauri-apps/api/core';
-
 export const preventDefault = <T extends Event>(fn: (e: T) => void): ((e: T) => void) => {
 	return (e: T) => {
 		e.preventDefault();
@@ -70,13 +68,6 @@ export class GlobalState {
 	}
 	set showRawYaml(value: boolean) {
 		this._state.showRawYaml = value;
-	}
-
-	// async submit() {
-	// 	this.greet = await invoke('greet', { name: this.prompt });
-	// }
-	async submit() {
-		// submission logic here
 	}
 
 	reset() {
