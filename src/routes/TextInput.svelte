@@ -21,7 +21,6 @@
 		if (gs.prompt === '') {
 			toast.error('Prompt is currently empty.');
 		} else {
-			gs.submit();
 			sendText();
 			toast.success('Prompt has been sent.');
 		}
